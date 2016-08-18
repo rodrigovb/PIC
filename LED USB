@@ -1,0 +1,40 @@
+#include <xc.h>
+#include <stdio.h>
+#include "usart.h"
+
+#pragma config FOSC = XT        // Oscillator Selection bits (XT oscillator)
+#pragma config WDTE = OFF       // Watchdog Timer Enable bit (WDT disabled)
+#pragma config PWRTE = OFF      // Power-up Timer Enable bit (PWRT disabled)
+#pragma config BOREN = OFF      // Brown-out Reset Enable bit (BOR disabled)
+#pragma config LVP = OFF        // Low-Voltage (Single-Supply) In-Circuit Serial Programming Enable bit (RB3 is digital I/O, HV on MCLR must be used for programming)
+#pragma config CPD = OFF        // Data EEPROM Memory Code Protection bit (Data EEPROM code protection off)
+#pragma config WRT = OFF        // Flash Program Memory Write Enable bits (Write protection off; all program memory may be written to by EECON control)
+#pragma config CP = OFF         // Flash Program Memory Code Protection bit (Code protection off)
+
+
+
+/* A simple demonstration of serial communications which
+ * incorporates the on-board hardware USART of the Microchip
+ * PIC16Fxxx series of devices. */
+
+void main(void){
+    TRISB = 0x00;
+	unsigned char input;
+
+	INTCON=0;	// purpose of disabling the interrupts.
+
+	init_comms();	// set up the USART - settings defined in usart.h
+
+	// Output a message to prompt the user for a keypress	
+	printf("\r A para prender, P para apagar \n");
+	while(1){
+		input = getch();	// read a response from the user
+				if(input==97 || 65) {
+            PORTB=0x00;      
+        }         
+         		if(input==112 || 80) {
+            PORTB=0xFF;      
+        }      
+   
+	}
+}
